@@ -27,13 +27,14 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build, tag and push image to ECR
         id: build-image
         env:
           IMAGE_TAG: ${{github.sha}}
         run: |
+          aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
           docker build -t $AWS_REPOSITORY:$IMAGE_TAG .
           docker tag $AWS_REPOSITORY:$IMAGE_TAG ${{ secrets.AWS_ECR }}/$AWS_REPOSITORY:$IMAGE_TAG
           docker push ${{ secrets.AWS_ECR }}/$AWS_REPOSITORY:$IMAGE_TAG
