@@ -60,9 +60,9 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: task-definition.json
-          service: $ECS_SERVICE
-          cluster: $ECS_CLUSTER
+          service: helloworldservice
+          cluster: helloworldcluster
 
       - name: Force deploy
         run: |
-          aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --region  ${{ secrets.AWS_REGION }} --force-new-deployment 
+          aws ecs update-service --cluster helloworldcluster --service helloworldservice --region  ${{ secrets.AWS_REGION }} --force-new-deployment 
